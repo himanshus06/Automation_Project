@@ -57,3 +57,25 @@ else
 	echo "File doesn't exist do you want to create it"
 fi
 
+#Creating a file in html foramat for logs
+path="/var/www/html"
+
+if [[ -f ${path}/inventory.html ]];
+then
+	echo "No need to create the HTML page"
+else
+	echo -e 'Log Type\t Time created\t type\t Size\t' > ${path}/inventory.html
+fi
+
+#appending the new entry for the file
+
+if [[ -f ${path}/inventory.html ]];
+then
+      echo -e "httpd-logs\t ${timestamp}\t tar\t $(du -bsh /tmp/${name}-httpd-logs-${timestamp}.tar | awk '{print $1}')" >> ${path}/inventory.html
+fi
+
+if [[ ! -f /etc/cron.d/automation ]];
+then
+	echo " 12 12 * * * root /root/Automation_Project/automation.sh" >> /etc/cron.d/automation
+fi
+
